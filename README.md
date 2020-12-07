@@ -2,6 +2,10 @@
 Java Appointment Scheduler
 
 
+This is a Java program for managing clients and client appointments. This project is mainly focused on MySQL connector, ZonedDateTime, Locale detection, JavaFx, and designing an ituitive user iterface. The main improvement I would like to make to this project would be try and make the appointment calendars a little more efficient. Otherwise, I feel as though the user experience using this software is pretty straight-forward. This project was a great learning experience in becoming more familar with various aspects of programming in Java.
+
+
+
 SCENARIO
 You are working for a software company that has been contracted to develop a scheduling desktop user interface application. The contract is with a global consulting organization that conducts business in multiple languages and has main offices in Phoenix, Arizona; New York, New York; and London, England. The consulting organization has provided a MySQL database that your application must pull data from. The database is used for other systems and therefore its structure cannot be modified.
 
