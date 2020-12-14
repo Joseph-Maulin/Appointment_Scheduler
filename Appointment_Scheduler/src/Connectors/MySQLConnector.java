@@ -840,8 +840,13 @@ public class MySQLConnector {
             int hourEnd = Integer.parseInt(timeEndArray[0]);
             int minEnd = Integer.parseInt(timeEndArray[1]);
             
-            LocalDateTime startDateTime = ZonedDateTime.of(year, month, day, hourStart, minStart, 0, 0, zoneId).toLocalDateTime();
-            LocalDateTime endDateTime = ZonedDateTime.of(year, month, day, hourEnd, minEnd, 0, 0, zoneId).toLocalDateTime();
+//            LocalDateTime startDateTime = ZonedDateTime.of(year, month, day, hourStart, minStart, 0, 0, zoneId).toLocalDateTime();
+//            LocalDateTime endDateTime = ZonedDateTime.of(year, month, day, hourEnd, minEnd, 0, 0, zoneId).toLocalDateTime();
+            LocalDateTime startDateTime = ZonedDateTime.of(year, month, day, hourStart, minStart, 0, 0, ZoneId.systemDefault()).withZoneSameInstant(zoneId).toLocalDateTime();
+            LocalDateTime endDateTime = ZonedDateTime.of(year, month, day, hourEnd, minEnd, 0, 0, ZoneId.systemDefault()).withZoneSameInstant(zoneId).toLocalDateTime();
+            
+            System.out.println(startDateTime);
+            System.out.println(endDateTime);
             
             String updateAppointmentSQL = "UPDATE appointment "
                                         + "SET "
@@ -941,8 +946,9 @@ public class MySQLConnector {
             ResultSet rs = stmt.executeQuery(sqlStatement);
             ArrayList<Appointment> myAppointments = new ArrayList<Appointment>();
             
-            ZoneId zone= ZoneId.systemDefault();
-            
+            ZoneId zone = ZoneId.systemDefault();
+            ZoneId zoneUTC = ZoneId.of("UTC");
+           
             while(rs.next()){
 //                public Appointment(int appointmentID, int customerID, int userID, String title, String description,
 //                       String location, String contact, String type, String url, Timestamp start,
@@ -956,8 +962,8 @@ public class MySQLConnector {
                 String contact = rs.getString("contact");
                 String type = rs.getString("type");
                 String url = rs.getString("url");
-                LocalDateTime start = rs.getTimestamp("start").toLocalDateTime().atZone(zone).toLocalDateTime();
-                LocalDateTime end = rs.getTimestamp("end").toLocalDateTime().atZone(zone).toLocalDateTime();
+                LocalDateTime start = rs.getTimestamp("start").toLocalDateTime().atZone(zoneUTC).withZoneSameInstant(zone).toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("end").toLocalDateTime().atZone(zoneUTC).withZoneSameInstant(zone).toLocalDateTime();
                 LocalDateTime createDate = rs.getTimestamp("createDate").toLocalDateTime().atZone(zone).toLocalDateTime();
                 String createdBy = rs.getString("createdBy");
                 LocalDateTime lastUpdate = rs.getTimestamp("lastUpdate").toLocalDateTime().atZone(zone).toLocalDateTime();

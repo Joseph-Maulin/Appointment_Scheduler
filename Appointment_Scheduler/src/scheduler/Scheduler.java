@@ -38,15 +38,20 @@ import java.util.Map;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
 public class Scheduler{
+    
+    
+    
     
     // Parameters
     private String currentUser;
@@ -119,6 +124,7 @@ public class Scheduler{
     public Scheduler(Stage primaryStage){
         
         
+        
         // Parameters
         this.currentUser = "";
         this.currentUserId = -1;
@@ -136,6 +142,12 @@ public class Scheduler{
         
         // Stage
         this.primary = primaryStage;
+        this.primary.setX(5);
+        this.primary.setY(5);
+        
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        this.primary.setMaxHeight(primScreenBounds.getHeight()-5);
+        this.primary.setMaxWidth(primScreenBounds.getWidth()-5);
         
         // Connector
         this.myConnector = new MySQLConnector();
@@ -1175,38 +1187,42 @@ public class Scheduler{
             // check for time overlaps
             String startTime[] = addAppointmentScene.getPane().getAddAppointmentStartDropValue().split(":");
             String endTime[] = addAppointmentScene.getPane().getAddAppointmentEndDropValue().split(":");
-            int hour = Integer.parseInt(startTime[0]);
-            int min = Integer.parseInt(startTime[1]);
+            int startHour = Integer.parseInt(startTime[0]);
+            int startMin = Integer.parseInt(startTime[1]);
             int endHour = Integer.parseInt(endTime[0]);
             int endMin = Integer.parseInt(endTime[1]);
-            ObservableList<String> times = addAppointmentScene.getPane().getAddAppointmentStartDropBox().getItems();
+//            ObservableList<String> times = addAppointmentScene.getPane().getAddAppointmentStartDropBox().getItems();
+            ArrayList<Appointment> dayAppointmentTimes = this.myConnector.getAppointmentsOnDate(this.currentUserId, appointmentDate);
             
-            
-            time_check:while(!(hour == endHour && min == endMin)){
-                for(String time : times){
-                    String temp[] = time.split(":");
-                    int tmpHour = Integer.parseInt(temp[0]);
-                    int tmpMin = Integer.parseInt(temp[1]);
-                    if(tmpHour == hour && tmpMin == min){
-                        min += 15;
-                        if(min ==60){
-                            min = 0;
-                            hour ++;
-                        }
-                        continue time_check;
+            overlap_check:
+            for(Appointment app : dayAppointmentTimes){
+                LocalDateTime appStart = app.getStart();
+                LocalDateTime appEnd = app.getEnd();
+                
+                int appStartHour = appStart.getHour();
+                int appStartMin = appStart.getMinute();
+                int appEndHour = appEnd.getHour();
+                int appEndMin = appEnd.getMinute();
+
+                if((startHour==appStartHour && endHour>appEndHour)|| 
+                   (endHour==appEndHour && startHour<appStartHour && endMin>=appStartMin) ||
+                   (startHour<appStartHour && endHour>appEndHour) ||
+                   (startHour==appStartHour && endHour==appStartHour && startMin<appStartMin && endMin>=appStartMin) ||
+                   (startHour==appEndHour && endHour==appEndHour && startMin<appEndMin && endMin>=appEndMin)||
+                   (startHour==appStartHour && endHour>startHour && startMin<appStartMin ) ||
+                   (endHour==appEndHour && startHour<endHour && endMin>=appEndMin)){
+
+                
+                    if (this.languageSetting == 0) {
+                        this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Time Overlaps Another Appointment");
                     }
-                }
-                
-                if (this.languageSetting == 0) {
-                    this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Time Overlaps Another Appointment");
-                }
-                else{
-                    this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("El Tiempo se Superpone a Otra Cita");
-                }
-                
-                return;
-            }   
-            
+                    else{
+                        this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("El Tiempo se Superpone a Otra Cita");
+                    }
+
+                    return;
+                }   
+            }
             
             //reset connection
             this.myConnector.setConnection();
@@ -1591,37 +1607,40 @@ public class Scheduler{
             // get drop box time data
             String startTime[] = updateAppointmentScene.getPane().getUpdateAppointmentStartDropValue().split(":");
             String endTime[] = updateAppointmentScene.getPane().getUpdateAppointmentEndDropValue().split(":");
-            int hour = Integer.parseInt(startTime[0]);
-            int min = Integer.parseInt(startTime[1]);
+            int startHour = Integer.parseInt(startTime[0]);
+            int startMin = Integer.parseInt(startTime[1]);
             int endHour = Integer.parseInt(endTime[0]);
             int endMin = Integer.parseInt(endTime[1]);
-            ObservableList<String> times = updateAppointmentScene.getPane().getUpdateAppointmentStartDropBox().getItems();
+                       ArrayList<Appointment> dayAppointmentTimes = this.myConnector.getAppointmentsOnDate(this.currentUserId, appointmentDate);
             
-            // check for time overlaps
-            time_check:while(!(hour == endHour && min == endMin)){
-                for(String time : times){
-                    String temp[] = time.split(":");
-                    int tmpHour = Integer.parseInt(temp[0]);
-                    int tmpMin = Integer.parseInt(temp[1]);
-                    if(tmpHour == hour && tmpMin == min){
-                        min += 15;
-                        if(min ==60){
-                            min = 0;
-                            hour ++;
-                        }
-                        continue time_check;
-                    }
-                }
+            overlap_check:
+            for(Appointment app : dayAppointmentTimes){
+                LocalDateTime appStart = app.getStart();
+                LocalDateTime appEnd = app.getEnd();
                 
-                if (this.languageSetting == 0) {
-                    this.updateAppointmentScene.getPane().setUpdateAppointmentErrorResponse("Time Overlaps Another Appointment");
-                }
-                else{
-                    this.updateAppointmentScene.getPane().setUpdateAppointmentErrorResponse("El Tiempo se Superpone a Otra Cita");
-                }
-                 
-                return;
-            }   
+                int appStartHour = appStart.getHour();
+                int appStartMin = appStart.getMinute();
+                int appEndHour = appEnd.getHour();
+                int appEndMin = appEnd.getMinute();
+
+                if((startHour==appStartHour && endHour>appEndHour)|| 
+                   (endHour==appEndHour && startHour<appStartHour && endMin>=appStartMin) ||
+                   (startHour<appStartHour && endHour>appEndHour) ||
+                   (startHour==appStartHour && endHour==appStartHour && startMin<appStartMin && endMin>=appStartMin) ||
+                   (startHour==appEndHour && endHour==appEndHour && startMin<appEndMin && endMin>=appEndMin)||
+                   (startHour==appStartHour && endHour>startHour && startMin<appStartMin ) ||
+                   (endHour==appEndHour && startHour<endHour && endMin>=appEndMin)){
+                
+                    if (this.languageSetting == 0) {
+                        this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Time Overlaps Another Appointment");
+                    }
+                    else{
+                        this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("El Tiempo se Superpone a Otra Cita");
+                    }
+
+                    return;
+                }   
+            }
             
             //set connection
             this.myConnector.setConnection();

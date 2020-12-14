@@ -14,7 +14,7 @@ public class Appointments_Scene {
     
     public Appointments_Scene(Appointment_Pane appointmentPane){
         this.pane = appointmentPane;
-        this.scene = new Scene(this.pane.getPane(), 900, 1200);
+        this.scene = new Scene(this.pane.getPane(), 900, 1000);
     }
     
     
