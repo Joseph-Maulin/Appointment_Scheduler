@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -145,6 +146,7 @@ public class Scheduler{
         this.primary.setX(5);
         this.primary.setY(5);
         
+        // set stage bounds
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         this.primary.setMaxHeight(primScreenBounds.getHeight()-5);
         this.primary.setMaxWidth(primScreenBounds.getWidth()-5);
@@ -223,6 +225,7 @@ public class Scheduler{
         this.reportScene = new Report_Scene(this.reportPane);
         
         
+        // set to Spanish translation if spanish language is detected
         if(this.languageSetting == 1){
             this.loginScene.getPane().setToSpanish();
             this.mainScene.getPane().setToSpanish();
@@ -1153,7 +1156,24 @@ public class Scheduler{
                 return;
             }
             
-            if(!(SQLaddAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+"))){
+            if(SQLaddAppointmentUrl.equals("")){
+                if (this.languageSetting == 0) {
+                    this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Url Required");
+                }
+                else{
+                    this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Url Requerido");
+                }
+                return;
+            }
+            
+            try{
+                URL url = new URL(SQLaddAppointmentUrl);
+                
+            }
+            
+            catch (Exception MalforedURLException){
+//            if(!(SQLaddAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"))){
+//            if(!(SQLaddAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+"))){
                 if (this.languageSetting == 0) {
                     this.addAppointmentScene.getPane().setAddAppointmentErrorResponse("Url Invalid Format");
                 }
@@ -1573,7 +1593,24 @@ public class Scheduler{
                 return;
             }
             
-            if(!(SQLupdateAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+"))){
+            if(SQLupdateAppointmentUrl.equals("")){
+                if (this.languageSetting == 0) {
+                    this.updateAppointmentScene.getPane().setUpdateAppointmentErrorResponse("Url Required");
+                }
+                else {
+                    this.updateAppointmentScene.getPane().setUpdateAppointmentErrorResponse("Url Requerido");
+                }
+                return;
+            }
+            
+            try{
+                URL url = new URL(SQLupdateAppointmentUrl);
+                
+            }
+            
+            catch (Exception MalforedURLException){
+//            if(!(SQLaddAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"))){
+//            if(!(SQLaddAppointmentUrl.matches("((http?|https|ftp|file)://)?((W|w){3}.)?[a-zA-Z0-9]+\\.[a-zA-Z]+"))){
                 if (this.languageSetting == 0) {
                     this.updateAppointmentScene.getPane().setUpdateAppointmentErrorResponse("Url Invalid Format");
                 }
