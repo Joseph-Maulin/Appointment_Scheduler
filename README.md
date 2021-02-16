@@ -30,17 +30,30 @@ You are not allowed to use frameworks or external libraries. The database does n
 A.   Create a log-in form that can determine the user’s location and translate log-in and error control messages (e.g., “The username and password did not match.”) into two languages.
 
 
+![Alt text](Appointment_Scheduler_Screenshots/Login.JPG?raw=true "Login")
+
+![Alt text](Appointment_Scheduler_Screenshots/Main_Menu.JPG?raw=true "Main")
+
+
 
 B.   Provide the ability to add, update, and delete customer records in the database, including name, address, and phone number.
 
+
+![Alt text](Appointment_Scheduler_Screenshots/Customer.JPG?raw=true "Customer")
+
+![Alt text](Appointment_Scheduler_Screenshots/Add_Customer.JPG?raw=true "Add Customer")
  
 
 C.   Provide the ability to add, update, and delete appointments, capturing the type of appointment and a link to the specific customer record in the database.
 
+![Alt text](Appointment_Scheduler_Screenshots/Add_Appointment.JPG?raw=true "Add Appointment")
 
 
 D.   Provide the ability to view the calendar by month and by week.
 
+![Alt text](Appointment_Scheduler_Screenshots/Montly_Calendar.JPG?raw=true "Monthly Calendar")
+
+![Alt text](Appointment_Scheduler_Screenshots/Weekly_Calendar.JPG?raw=true "Weekly Calendar")
  
 
 E.    Provide the ability to automatically adjust appointment times based on user time zones and daylight saving time.
@@ -73,6 +86,8 @@ I.   Provide the ability to generate each  of the following reports:
 •   the schedule for each consultant
 
 •   one additional report of your choice
+
+![Alt text](Appointment_Scheduler_Screenshots/Reports.JPG?raw=true "Reports")
 
 
 
