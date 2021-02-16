@@ -1083,7 +1083,7 @@ public class Scheduler{
 
             // validation checks
             String appointmentDateString = this.addAppointmentScene.getPane().getAddAppointmentDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             LocalDate appointmentDate = LocalDate.parse(appointmentDateString, formatter);
             
             if (appointmentDate.compareTo(LocalDate.now()) < 0){
@@ -1510,7 +1510,7 @@ public class Scheduler{
             
             // validation checks
             String appointmentDateString = this.updateAppointmentScene.getPane().getUpdateAppointmentDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             LocalDate appointmentDate = LocalDate.parse(appointmentDateString, formatter);
             
             if (appointmentDate.compareTo(LocalDate.now()) < 0){

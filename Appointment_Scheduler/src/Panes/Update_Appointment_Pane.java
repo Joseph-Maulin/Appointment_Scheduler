@@ -216,7 +216,14 @@ public class Update_Appointment_Pane {
     
     // Getters
     public String getUpdateAppointmentDate(){
-        return this.updateAppointmentDate.getText();
+        String[] dates = this.updateAppointmentDate.getText().split("/");
+        String date = "";
+        for(int i=0; i<dates.length; i++){
+            if (dates[i].length() < 2) {
+                dates[i] = "0" + dates[i];
+            }
+        }      
+        return String.join("/", dates);
     }
     
     public Button getUpdateAppointmentCancelButton(){

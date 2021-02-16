@@ -170,7 +170,14 @@ public class Add_Appointment_Pane {
     } 
     
     public String getAddAppointmentDate(){
-        return this.addAppointmentDate.getText();
+        String[] dates = this.addAppointmentDate.getText().split("/");
+        String date = "";
+        for(int i=0; i<dates.length; i++){
+            if (dates[i].length() < 2) {
+                dates[i] = "0" + dates[i];
+            }
+        }      
+        return String.join("/", dates);
     }
     
     public Button getAddAppointmentCancelButton(){
