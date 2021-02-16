@@ -51,7 +51,7 @@ C.   Provide the ability to add, update, and delete appointments, capturing the 
 
 D.   Provide the ability to view the calendar by month and by week.
 
-![Alt text](Appointment_Scheduler_Screenshots/Montly_Calendar.JPG?raw=true "Monthly Calendar")
+![Alt text](Appointment_Scheduler_Screenshots/Monthly_Calendar.JPG?raw=true "Monthly Calendar")
 
 ![Alt text](Appointment_Scheduler_Screenshots/Weekly_Calendar.JPG?raw=true "Weekly Calendar")
  
